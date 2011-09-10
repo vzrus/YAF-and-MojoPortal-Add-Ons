@@ -4,6 +4,7 @@ To use this you should compile MP solution with extra projects added.
 1.Prepare YAF source code.
 You can compile it and make sure that it works ot take a ready code beginning with 1.9.6 Beta 1(currently).
 YetAnotherForum.NET - is your future distribution folder which should be renamed to YAF by default settings.
+But you should replace YAF.Providers folder with the attached one anyway, so you should compile it anyway. 
 
 Otherwise rename folder were are distribution files.
 Replace scripts in the distribution by FileToReplaceInYAFFiles folder content in the module files folder.
