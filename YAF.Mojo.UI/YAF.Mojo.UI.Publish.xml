@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="D:\!Web.Projects\Mixin.MojoPortal\!Publish.YAFModule" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/YAF.Mojo.UI.dll" publishTime="12/04/2010 14:46:38" />
+    <file relUrl="bin/YAF.Mojo.UI.pdb" publishTime="12/04/2010 14:46:38" />
+    <file relUrl="App_MasterPages/layout.Master" publishTime="09/25/2010 19:39:26" />
+    <file relUrl="Setup/applications/YAFModule/SchemaInstallScripts/0.0.0.1.config" publishTime="09/25/2010 19:41:56" />
+    <file relUrl="bin/YAF.Mojo.dll" publishTime="12/04/2010 13:40:32" />
+    <file relUrl="Web.config" publishTime="11/13/2010 13:56:24" />
+    <file relUrl="YAFModule/Forum.ascx" publishTime="11/08/2010 20:51:08" />
+    <file relUrl="bin/YAF.Mojo.pdb" publishTime="12/04/2010 13:40:32" />
+    <file relUrl="YAFModule/ActiveDiscussion.ascx" publishTime="09/25/2010 20:18:43" />
+    <file relUrl="YAFModule/Controls/YAFBoardSettings.ascx" publishTime="12/04/2010 16:07:37" />
+    <file relUrl="App_GlobalResources/YetAnotherForum.resx" publishTime="09/25/2010 19:40:55" />
+    <file relUrl="Setup/applications/YAFModule/FeatureDefinitions/10000_YAF.config" publishTime="09/25/2010 19:41:56" />
+  </publishProfile>
+</publishData>
