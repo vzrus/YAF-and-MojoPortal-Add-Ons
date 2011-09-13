@@ -30,7 +30,7 @@ After you compiled YAF and are sure that everything works.
  
 2.1. Put the new 'YAF' folder into MP 'Web' folder. Don't add it to MP solution!
 
-2.2. Put YetAnotherForum.Mojo.Src folder into MP main solution folder.
+2.2. Put YAF-and-MojoPortal-Add-Ons folder into MP main solution folder.
 
 3. Merge configs - look for example working config in the folder (Web.sample.config). Just replace you connection strings. For further details go to MP site. Fix merged web.config
 Set this value in web.config  
@@ -40,7 +40,10 @@ Don't use user.config in the folder - it's for reference only.
 
 4.Remove old YAF Web.config, db.config and app.config from the folder. Move all assemblies from bin folder to MP bin folder and remove YAF bin folder and other things to not publish unused files.
 
-5. Add new projects to MP solution and fix assemblies references of your projects in MP solution - they should point to assemblies in MP bin folder. Compile it.
+5. Add new projects to MP solution and fix assemblies references of your projects in MP solution - they should point to assemblies in MP bin folder.Fix an output bild path to ../../../Web/Bin for both projects. It'll put your assemblies to MP /Bin folder.
+
+
+Compile it.
 
 6. Before install and module install.
 
@@ -50,11 +53,11 @@ YAF stores passwords encripted - make it for MP admin too before install just in
 
 *Be careful with Admin name which you shoud enter while installing. You should remember you MP host admin email which should be an existing MP admin name.
 Use existing user name when required. Like admin@admin.com, don't create a new admin user.
-After install you login under the name in MP again. Now you're YAF host admin.
+After install you should login under the name into your MP site again. Now you're YAF host admin.
 
 7.Post install actions.
 
-Click on Host on the upper panel. Check Enable Display Name: on Features tab.
+Click on Host on the upper panel. Check Enable Display Name: on Features tab.It's not required when you create a second board.
 
 8.In the left accordian menu find User and Role -> Roles setting. Assign required privrleges.
 
