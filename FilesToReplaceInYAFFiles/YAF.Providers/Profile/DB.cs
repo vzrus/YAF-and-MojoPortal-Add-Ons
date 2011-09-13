@@ -273,11 +273,12 @@ namespace YAF.Providers.Profile
     /// </returns>
     public object GetProviderUserKey([NotNull] object appName, [NotNull] object username)
     {
-      DataRow row = System.Web.Security.Membership.GetUser(appName.ToString(), null, username.ToString(), false);
 
-      if (row != null)
+     var mu = System.Web.Security.Membership.GetUser(username.ToString());
+
+      if (mu != null)
       {
-        return row["UserID"];
+        return mu.ProviderUserKey;
       }
 
       return null;
@@ -358,7 +359,6 @@ namespace YAF.Providers.Profile
         columnStr.Append(",ApplicationID ");
         valueStr.Append(",@ApplicationID");
         setStr.Append(",ApplicationID=@ApplicationID");
-        cmd.Parameters.AddWithValue("@ApplicationID", appId);
 
         columnStr.Append(",IsAnonymous ");
         valueStr.Append(",@IsAnonymous");
@@ -386,15 +386,12 @@ namespace YAF.Providers.Profile
 
     private object GetApplicationIdFromName(object appName)
     {
-        using (SqlCommand cmd = this._msSqlDbAccess.GetCommand("prov_createapplication"))
+        using (SqlCommand cmd = MsSqlDbAccess.GetCommand("prov_createapplication1"))
         {
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("i_applicationname", appName);
-            cmd.Parameters.AddWithValue("i_newguid", Guid.NewGuid()); ;
-            var appId = new SqlParameter("i_applicationid", SqlDbType.UniqueIdentifier);
-            appId.Direction = ParameterDirection.Output;
-            cmd.Parameters.Add(appId);
+            cmd.Parameters.AddWithValue("ApplicationName", appName);
+            cmd.Parameters.AddWithValue("NewGuid", Guid.NewGuid());
 
             return _msSqlDbAccess.ExecuteScalar(cmd);
         }

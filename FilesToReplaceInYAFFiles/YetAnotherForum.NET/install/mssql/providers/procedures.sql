@@ -2,6 +2,7 @@
 -- Author:		Mek
 -- Create date: 30 September 2007
 -- Description:	Membership Provider, Roles Provider SPROCS
+-- changed by vzrus
 -- =============================================
 
 
@@ -14,6 +15,10 @@ GO
 
 IF  exists(select top 1 1 from dbo.sysobjects WHERE id = OBJECT_ID(N'[{databaseOwner}].[{objectQualifier}prov_createapplication]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}prov_createapplication]
+GO
+
+IF  exists(select top 1 1 from dbo.sysobjects WHERE id = OBJECT_ID(N'[{databaseOwner}].[{objectQualifier}prov_createapplication1]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [{databaseOwner}].[{objectQualifier}prov_createapplication1]
 GO
 
 IF  exists(select top 1 1 from dbo.sysobjects WHERE id = OBJECT_ID(N'[{databaseOwner}].[{objectQualifier}prov_changepassword]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
@@ -164,10 +169,30 @@ BEGIN
 	
 	IF (@ApplicationID IS Null)
 	BEGIN
-		    SELECT  @ApplicationId = NEWID()
+		    SELECT  @ApplicationID = NEWID()
             INSERT  [{databaseOwner}].[{objectQualifier}prov_Application] (ApplicationId, ApplicationName, ApplicationNameLwd)
             VALUES  (@ApplicationId, @ApplicationName, LOWER(@Applicationname))
     END
+END 
+GO
+
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}prov_createapplication1]
+(
+@ApplicationName nvarchar(256),
+@NewGuid uniqueidentifier 
+)
+AS
+BEGIN
+DECLARE @ApplicationID uniqueidentifier
+    SELECT @ApplicationID = ApplicationID FROM [{databaseOwner}].[{objectQualifier}prov_Application] WHERE ApplicationNameLwd=LOWER(@ApplicationName)
+	
+	IF (@ApplicationID IS Null)
+	BEGIN
+		    SELECT  @ApplicationID = @NewGuid
+            INSERT  [{databaseOwner}].[{objectQualifier}prov_Application] (ApplicationId, ApplicationName, ApplicationNameLwd)
+            VALUES  (@ApplicationId, @ApplicationName, LOWER(@Applicationname))
+    END
+	SELECT  @ApplicationID
 END 
 GO
 

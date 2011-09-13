@@ -122,19 +122,19 @@ GO
 
 if not exists(select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and name='ApplicationID')
 begin
-	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD [ApplicationID] [uniqueidentifier] NOT NULL
+	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD [ApplicationID] [uniqueidentifier] NULL
 end
 GO 
 
 if not exists(select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and name='IsAnonymous')
 begin
-	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD [IsAnonymous] [bit] NOT NULL DEFAULT 0
+	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD [IsAnonymous] [bit] NULL DEFAULT 0
 end
 GO 
 
 if not exists(select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and name='UserName')
 begin
-	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD  [UserName] [nvarchar](255) NOT NULL
+	ALTER TABLE [{databaseOwner}].[{objectQualifier}prov_Profile] ADD  [UserName] [nvarchar](255) NULL
 end
 GO 
 	
