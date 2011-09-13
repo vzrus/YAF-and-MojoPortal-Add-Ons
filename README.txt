@@ -15,7 +15,7 @@ Mercurial Clone URL: https://hg01.codeplex.com/yafnet
 In distribution source code like YAF-v1.9.6-BETA1-SRC 
 http://yafnet.codeplex.com/releases/72897/download/278004
 
-The folder should be renamed to 'YAF' by default settings. Later you can change the folder name in .config.
+
 
 1.2. In folder FilesToReplaceInYAFFiles there are files which you should replace in YAF source code. The folder YAF.Providers contains profile provider code tweaks and /YAF/install/mssql/providers contains sql scripts for it. 
 You can use your custom profile provider - but it should not be bound to Membership provider or bound to MojoPortal Membership only. In this case you don't need the files. 
@@ -24,7 +24,8 @@ Now can compile and install it and make sure that it works with a test standalon
 
 
 2.Merging it.
- 
+
+The folder 'YetAnotherForum.NET' should be renamed to 'YAF' by default .config settings. Later you can change the folder name and location in .config.
 After you compiled YAF and are sure that everything works.
  
 2.1. Put the new 'YAF' folder into MP 'Web' folder. Don't add it to MP solution!

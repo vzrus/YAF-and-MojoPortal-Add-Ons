@@ -273,7 +273,7 @@ namespace YAF.Providers.Profile
     /// </returns>
     public object GetProviderUserKey([NotNull] object appName, [NotNull] object username)
     {
-      DataRow row = Membership.GetUser(appName.ToString(), null, username.ToString(), false);
+      DataRow row = System.Web.Security.Membership.GetUser(appName.ToString(), null, username.ToString(), false);
 
       if (row != null)
       {
@@ -348,7 +348,7 @@ namespace YAF.Providers.Profile
         setStr.Append(",LastUpdatedDate=@LastUpdatedDate");
         cmd.Parameters.AddWithValue("@LastUpdatedDate", DateTime.UtcNow);
 
-        MembershipUser mu = Membership.GetUser(userID);
+        MembershipUser mu = System.Web.Security.Membership.GetUser(userID);
 
         columnStr.Append(",LastActivity ");
         valueStr.Append(",@LastActivity");
