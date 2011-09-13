@@ -240,8 +240,8 @@ namespace YAF.Mojo.UI.YAFModule.Controls
         {
 
             // Make sure that display names are enabled and can't be modified by default
-            LegacyDb.registry_save("enabledisplayname", 1);
-            LegacyDb.registry_save("allowdisplaynamemodification", 0);
+            LegacyDb.registry_save("enabledisplayname", "1");
+            LegacyDb.registry_save("allowdisplaynamemodification", "0");
 
             // Save the current portal editor as the site admin user.
             SiteUser su = SiteUtils.GetCurrentSiteUser();
