@@ -15,6 +15,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ***************************************************************************************************
 */
+
+using YAF.Classes;
+
 namespace YAF.Mojo.UI.YAFModule
 {
     #region Region
@@ -35,6 +38,7 @@ namespace YAF.Mojo.UI.YAFModule
 
     public partial class YafForum : SiteModuleControl
     {
+        
         /// <summary>
         /// The page_ load.
         /// </summary>
@@ -50,17 +54,16 @@ namespace YAF.Mojo.UI.YAFModule
             Page.EnableViewState = true; // MojoPortal disables Viewstate by default and YAF requires it
           
             // Disable Jquery Register
-            if (HttpContext.Current.Items["AddJQueryRegistedHandler"] == null)
+            if (!ConfigHelper.GetBoolProperty("DisableJQuery",false))
             {
-                HttpContext.Current.Items["AddJQueryRegistedHandler"] = true;
+                HttpContext.Current.Items["DisableJQuery"] = true;
             }
-
+            
             try
-            {this.forum1.BoardID = WebUtils.ParseInt32FromHashtable(Settings, "BoardID", 1);
-               
+            {
+                this.forum1.BoardID = WebUtils.ParseInt32FromHashtable(Settings, "BoardID", 1);
                 this.forum1.CategoryID = WebUtils.ParseInt32FromHashtable(Settings, "CategoryID", 0);
                 this.forum1.LockedForum = WebUtils.ParseInt32FromHashtable(Settings, "LockedForum", 0);
-              
             }
             catch (Exception)
             {
@@ -69,7 +72,7 @@ namespace YAF.Mojo.UI.YAFModule
 
            
             if (HttpContext.Current.User.Identity.IsAuthenticated)
-            {
+            { 
               SiteUser su = SiteUtils.GetCurrentSiteUser();
               SyncUserProfile.UpdateTimeZone(su);  
               SyncUserProfile.UpdateProfile(su);
