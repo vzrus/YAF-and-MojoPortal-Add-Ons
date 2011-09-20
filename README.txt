@@ -66,4 +66,4 @@ Click on Host on the upper panel. Check Enable Display Name: on Features tab.It'
 Warning! Don't put 2 YAF modules on a page. It's useless.
 Don't use 2 modules and many YAF boards so far - it's not tested well so far.
 
-    
+Look for latest info in wiki.   
