@@ -52,11 +52,11 @@ namespace YAF.Mojo.UI.YAFModule
         {
            
             Page.EnableViewState = true; // MojoPortal disables Viewstate by default and YAF requires it
-          
+
             // Disable Jquery Register
-            if (!ConfigHelper.GetBoolProperty("DisableJQuery",false))
+            if (HttpContext.Current.Items["AddJQueryRegistedHandler"] == null)
             {
-                HttpContext.Current.Items["DisableJQuery"] = true;
+                HttpContext.Current.Items["AddJQueryRegistedHandler"] = true;
             }
             
             try
