@@ -145,6 +145,7 @@ namespace YAF.Mojo
         /// <returns></returns>
         private string FriendlyRewriter(string url, int boardId, PageSettings currentPage)
         {
+            string rewriteDelimiter = "-";
 
             string newUrl = "{0}{1}?{2}".FormatWith(AppPath, Config.ForceScriptName ?? ScriptName, url);
 
@@ -262,11 +263,11 @@ namespace YAF.Mojo
                             useKey2 = "ft";
                             if ((parser[useKey2].ToType<int>()) == YafSyndicationFormats.Atom.ToInt())
                             {
-                                description += "-atom";
+                                description += "{0}atom".FormatWith(rewriteDelimiter);
                             }
                             else
                             {
-                                description += "-rss";
+                                description += "{0}rss".FormatWith(rewriteDelimiter);
                             }
                         }
                         handlePage = true;
@@ -284,7 +285,7 @@ namespace YAF.Mojo
                 if (parser["mid"] != null)
                 {
                     int page = parser["mid"].ToType<int>();
-                    newUrl += "-mid{0}-".FormatWith(page);
+                    newUrl += "{1}mid{0}{1}".FormatWith(page,rewriteDelimiter);
                     parser.Parameters.Remove("mid");
                 }
 
@@ -340,7 +341,7 @@ namespace YAF.Mojo
                         description = description.Remove(description.Length - 1, 1);
                     }
 
-                    newUrl += "_{0}".FormatWith(description);
+                    newUrl += "-{0}".FormatWith(description);
                 }
 
                 if (!isFeed)

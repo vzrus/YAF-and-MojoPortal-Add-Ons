@@ -1,0 +1,34 @@
+# 1. Modify MojoPortal Web.config
+
+     <configSections>    
+    <section name="rewriter" type="Intelligencia.UrlRewriter.Configuration.RewriterConfigurationSectionHandler, Intelligencia.UrlRewriter" requirePermission="false"/>
+...
+ </configSections>
+ <rewriter configSource="URLRewriter.config"/> 
+
+ <httpModules>
+      .....
+      <!-- It should be at the section bottom!!!
+      -->    
+      <add name="UrlRewriter" type="Intelligencia.UrlRewriter.RewriterHttpModule,Intelligencia.UrlRewriter"/>     
+    </httpModules> 
+
+  <system.webServer>
+ <modules runAllManagedModulesForAllRequests="true">
+.....
+ <!-- It should be at the section bottom!!!
+      --> 
+ <add name="UrlRewriter" type="Intelligencia.UrlRewriter.RewriterHttpModule,Intelligencia.UrlRewriter" preCondition="managedHandler"/>  
+</modules>
+..... 
+</system.webServer>  
+....
+<appSettings>
+...
+ <add key="YAF.EnableURLRewriting" value="false" />
+...
+</appSettings>
+# 2. After it.
+  Copy URLRewriter.config into site root.
+
+Url Rewriting doesn't depend on MojoPortal UrlRewriting.
