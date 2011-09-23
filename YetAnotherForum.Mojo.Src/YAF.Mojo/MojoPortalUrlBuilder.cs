@@ -145,6 +145,27 @@ namespace YAF.Mojo
         /// <returns></returns>
         private string FriendlyRewriter(string url, int boardId, PageSettings currentPage)
         {
+
+           string newUrl = FriendlyRewriter(url, boardId);
+
+            // It doesn't work - a problem in MP when rewirting is disabled
+            if (currentPage.UrlHasBeenAdjustedForFolderSites)
+            {
+                int trimIndex = currentPage.Url.IndexOf(currentPage.UnmodifiedUrl.Trim('~'));
+                string md = currentPage.Url.Remove(trimIndex).Trim('/');
+                md = md.Substring(md.LastIndexOf('/')+1);
+                string folderName = md;
+                newUrl = newUrl.Replace(newUrl, "/{0}{1}".FormatWith(folderName, newUrl));
+            }
+            return newUrl;
+        }
+        /// <summary>
+        /// The custom Url rewriter
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public string FriendlyRewriter(string url, int boardId)
+        {
             string rewriteDelimiter = "-";
 
             string newUrl = "{0}{1}?{2}".FormatWith(AppPath, Config.ForceScriptName ?? ScriptName, url);
@@ -154,7 +175,7 @@ namespace YAF.Mojo
 
             // get the base script file from the config -- defaults to, well, default.aspx :)
             string scriptFile = Config.BaseScriptFile;
-
+          
             if (scriptName.EndsWith(scriptFile))
             {
                 string before = scriptName.Remove(scriptName.LastIndexOf(scriptFile));
@@ -204,8 +225,8 @@ namespace YAF.Mojo
                         break;
                     case "profile":
                         useKey = "u";
-
-                        // description = GetProfileName( Convert.ToInt32( parser [useKey] ) );
+                        description = "profile";
+                       // description = GetProfileName( Convert.ToInt32( parser [useKey] ) );
                         break;
                     case "forum":
                         if (parser["c"].IsSet())
@@ -285,7 +306,7 @@ namespace YAF.Mojo
                 if (parser["mid"] != null)
                 {
                     int page = parser["mid"].ToType<int>();
-                    newUrl += "{1}mid{0}{1}".FormatWith(page,rewriteDelimiter);
+                    newUrl += "{1}mid{0}{1}".FormatWith(page, rewriteDelimiter);
                     parser.Parameters.Remove("mid");
                 }
 
@@ -341,7 +362,7 @@ namespace YAF.Mojo
                         description = description.Remove(description.Length - 1, 1);
                     }
 
-                    newUrl += "-{0}".FormatWith(description);
+                    newUrl += "_{0}".FormatWith(description);
                 }
 
                 if (!isFeed)
@@ -377,16 +398,8 @@ namespace YAF.Mojo
 
             // just make sure & is &amp; ...
             newUrl = newUrl.Replace("&amp;", "&").Replace("&", "&amp;");
-
-            // It doesn't work - a problem in MP when rewirting is disabled
-            if (currentPage.UrlHasBeenAdjustedForFolderSites)
-            {
-                int trimIndex = currentPage.Url.IndexOf(currentPage.UnmodifiedUrl.Trim('~'));
-                string md = currentPage.Url.Remove(trimIndex).Trim('/');
-                md = md.Substring(md.LastIndexOf('/')+1);
-                string folderName = md;
-                newUrl = newUrl.Replace(newUrl, "/{0}{1}".FormatWith(folderName, newUrl));
-            }
+           
+            
             return newUrl;
         }
     }
