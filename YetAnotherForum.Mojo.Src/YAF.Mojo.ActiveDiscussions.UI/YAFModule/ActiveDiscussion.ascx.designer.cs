@@ -85,15 +85,6 @@ namespace YAF.Mojo.ActiveDiscussions.UI {
         protected global::System.Web.UI.WebControls.PlaceHolder ActiveDiscussionPlaceHolder;
         
         /// <summary>
-        /// LatestPostsHeader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LatestPostsHeader;
-        
-        /// <summary>
         /// noifo_Tr control.
         /// </summary>
         /// <remarks>

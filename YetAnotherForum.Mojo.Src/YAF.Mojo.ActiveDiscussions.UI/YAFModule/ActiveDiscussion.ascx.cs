@@ -257,12 +257,14 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                 // allow caching since this is a guest...
                 activeTopics = YafContext.Current.Get<IDataCache>()[CacheKey] as DataTable;
             }
-            mid =  WebUtils.ParseInt32FromHashtable(Settings, "ModuleID", -999);
+            mid = WebUtils.ParseInt32FromHashtable(Settings, "YafForumModuleInstanceId", -999);
+            
             pageid = -1;
             siteid = -1;
             try
             {
-                DataTable dt =  ActiveDiscussions.GetAll(new Guid("c5584bb4-e42f-4c7d-81b7-037176d562df"),"BoardID");
+                DataTable dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df"), "BoardID");
+
                 if (dt.Rows.Count > 0)
                 {
 
@@ -275,11 +277,11 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                             siteid = Convert.ToInt32(forumactivediscussion["SiteID"]);
 
                             // The module is found, else retuned latest board. 
-                            if (mid == Convert.ToInt32(forumactivediscussion["ModuleID"]))
+                            if (mid == Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]))
                             {
                                 break;
                             }
-                            mid = Convert.ToInt32(forumactivediscussion["ModuleID"]);
+                            mid = Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]);
                             if (pageid > 0)
                             {
                                 break;
@@ -294,7 +296,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                         siteid = Convert.ToInt32(forumactivediscussion["SiteID"]);
 
                         // The module is found, else retuned latest board. 
-                        if (mid == Convert.ToInt32(forumactivediscussion["ModuleID"]))
+                        if (mid == Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]))
                         {
                             break;
                         }
@@ -314,7 +316,6 @@ namespace YAF.Mojo.ActiveDiscussions.UI
             }
             if (!Page.IsPostBack)
             {
-                this.LatestPostsHeader.Text = YAFActiveDiscussions.LatestPostsHeader;
                 if (activeTopics == null)
                 {
 
@@ -332,9 +333,10 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                         userId = LegacyDb.user_guest(BoardId).ToType<int>();
                     }
 
+                    int pcount = WebUtils.ParseInt32FromHashtable(Settings, "NumberToShow", 5);
                     activeTopics = LegacyDb.topic_latest(
                         BoardId,
-                        config.NumberToShow,
+                        pcount,
                         userId,
                         YafContext.Current.Get<YafBoardSettings>().UseStyledNicks,
                         YafContext.Current.Get<YafBoardSettings>().NoCountForumsInActiveDiscussions,

@@ -97,16 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.
-        /// </summary>
-        internal static string ModuleID {
-            get {
-                return ResourceManager.GetString("ModuleID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 5.
+        ///   Looks up a localized string similar to Number of topics to show:.
         /// </summary>
         internal static string NumberToShow {
             get {
@@ -115,11 +106,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to c5584bb4-e42f-4c7d-81b7-037176d562df.
+        ///   Looks up a localized string similar to View Forum.
         /// </summary>
-        internal static string YAFFeatureGuide {
+        internal static string VIEW_FORUM {
             get {
-                return ResourceManager.GetString("YAFFeatureGuide", resourceCulture);
+                return ResourceManager.GetString("VIEW_FORUM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yaf Feature definition GUID:.
+        /// </summary>
+        internal static string YafModuleDefinitionGuid {
+            get {
+                return ResourceManager.GetString("YafModuleDefinitionGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module name to display:.
+        /// </summary>
+        internal static string YafForumModuleInstanceId {
+            get {
+                return ResourceManager.GetString("YafForumModuleInstanceId", resourceCulture);
             }
         }
     }

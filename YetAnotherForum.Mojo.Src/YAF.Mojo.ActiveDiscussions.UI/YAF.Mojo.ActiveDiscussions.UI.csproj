@@ -39,7 +39,8 @@
     <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Web\bin\log4net.dll</HintPath>
     </Reference>
     <Reference Include="mojoPortal.Business">
@@ -89,7 +90,8 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="YAF">
+    <Reference Include="YAF, Version=1.9.6.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Web\bin\YAF.dll</HintPath>
     </Reference>
     <Reference Include="YAF.Classes.Config">
@@ -115,6 +117,7 @@
     <Content Include="Setup\applications\yafactivediscussions\SchemaInstallScripts\postgre\placeholder.txt" />
     <Content Include="Setup\applications\yafactivediscussions\SchemaUpgradeScripts\mssql\placeholder.txt" />
     <Content Include="Setup\applications\yafactivediscussions\SchemaUpgradeScripts\postgre\placeholder.txt" />
+    <Content Include="YAF.Mojo.ActiveDiscussions.Buisness.csproj" />
     <Content Include="YAFModule\ActiveDiscussion.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

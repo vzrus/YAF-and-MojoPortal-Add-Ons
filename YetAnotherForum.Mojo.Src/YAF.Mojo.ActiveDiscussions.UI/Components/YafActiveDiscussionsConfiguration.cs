@@ -17,11 +17,11 @@ namespace YAF.Mojo.ActiveDiscussions.UI
             get { return _numberToShow; }
         }
 
-        private Guid _yafFeatureGuide = new Guid("c5584bb4-e42f-4c7d-81b7-037176d562df");
+        private Guid _yafModuleDefinitionGuid;
 
-        public Guid YafFeatureGuide
+        public Guid YafModuleDefinitionGuid
         {
-            get { return _yafFeatureGuide; }
+            get { return _yafModuleDefinitionGuid; }
         }
 
         public YafActiveDiscussionsConfiguration()
@@ -37,8 +37,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
         {
             if (settings == null) { throw new ArgumentException("must pass in a hashtable of settings"); }
             _numberToShow = WebUtils.ParseInt32FromHashtable(settings, "NumberToShow", _numberToShow);
-
-            _yafFeatureGuide = WebUtils.ParseGuidFromHashTable(settings, "YAFFeatureGuide", _yafFeatureGuide);
+            _yafModuleDefinitionGuid = WebUtils.ParseGuidFromHashTable(settings, "YafModuleDefinitionGuid", _yafModuleDefinitionGuid);
         }
     }
 }

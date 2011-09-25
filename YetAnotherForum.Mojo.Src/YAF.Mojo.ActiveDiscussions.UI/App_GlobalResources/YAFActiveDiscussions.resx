@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ModuleID" xml:space="preserve">
-    <value>0</value>
+  <data name="YafForumModuleInstanceId" xml:space="preserve">
+    <value>Module name to display:</value>
   </data>
   <data name="FeatureName" xml:space="preserve">
     <value>YAF Active Discussions</value>
@@ -133,9 +133,12 @@
     <value>Display Settings</value>
   </data>
   <data name="NumberToShow" xml:space="preserve">
-    <value>5</value>
+    <value>Number of topics to show:</value>
   </data>
-  <data name="YAFFeatureGuide" xml:space="preserve">
-    <value>c5584bb4-e42f-4c7d-81b7-037176d562df</value>
+  <data name="YafModuleDefinitionGuid" xml:space="preserve">
+    <value>Yaf Feature definition GUID:</value>
+  </data>
+  <data name="VIEW_FORUM" xml:space="preserve">
+    <value>View Forum</value>
   </data>
 </root>

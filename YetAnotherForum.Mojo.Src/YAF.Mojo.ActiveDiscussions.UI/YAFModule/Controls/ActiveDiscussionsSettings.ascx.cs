@@ -20,11 +20,11 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
     using log4net;
 
     #endregion
- 
-    public partial class ActiveDiscussionsSettings : UserControl, ISettingControl
+
+    public partial class ActiveDiscussionsSettings : SiteModuleControl, ISettingControl
     {
         #region Fields
-        private int _moduleId = 0;
+        private int _yafForumModuleInstanceId = 0;
         private static readonly ILog log
          = LogManager.GetLogger(typeof(ActiveDiscussionsSettings));
 
@@ -32,9 +32,9 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
         #endregion
 
         #region Properties
-        private int ModuleID
+        private int YafForumModuleInstanceId
         {
-            get { return _moduleId; }
+            get { return _yafForumModuleInstanceId; }
         }
 
        
@@ -57,23 +57,37 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
             {
                 // Get interface to localization
                 var iloc = YafContext.Current.Get<ILocalization>();
-                this.BoardDropDownList.Text = iloc.GetText("ADMIN_EDITBOARD", "NAME");
-                BindBoardList();
-                NumberToShow.Text = config.NumberToShow.ToString();
-                YAFFeatureGuide.Text = config.YafFeatureGuide.ToString();
+                this.ModuleDropDownList.Text = iloc.GetText("ADMIN_EDITBOARD", "NAME");
+                BindControls();
             }
 
         }
 
-        protected void BindBoardList()
+        protected void BindControls()
         {
+            Guid dd  = config.YafModuleDefinitionGuid;
+            Guid dd1 = WebUtils.ParseGuidFromHashTable(Settings, "YafModuleDefinitionGuid", Guid.Empty);
+            dd1 = Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df");
             DataTable dt = null;
             try
             {
-                dt = ActiveDiscussions.GetAll(config.YafFeatureGuide, "BoardID");
+                dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(dd1, "YafForumModuleInstanceId");
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    _moduleId = Convert.ToInt32(dt.Rows[0]["ModuleID"]);
+                    int ss = -1;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        if (!int.TryParse(dr["SettingValue"].ToString(), out ss))
+                        {
+                            _yafForumModuleInstanceId = Convert.ToInt32(dr["ModuleID"]);
+                        }
+                        else
+                        {
+                          dr["ModuleID"] =  _yafForumModuleInstanceId = Convert.ToInt32(dr["SettingValue"]);
+                        }
+                    }
+                 
+                    dt.AcceptChanges();
                 }
                 else
                 {
@@ -86,19 +100,19 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
                 log.Debug("No data available to fill in the YAF Activedicsussions control");
                 Response.Redirect(string.Format("{0}/install", Config.AppRoot));
             }
-                BoardDropDownList.Items.Clear();
-                BoardDropDownList.AppendDataBoundItems = true;
-                BoardDropDownList.DataSource = dt; // TODO: Change this to a list unique for the Portal
-                BoardDropDownList.DataTextField = "ModuleTitle";
-                BoardDropDownList.DataValueField = "ModuleID";
-                BoardDropDownList.SelectedValue = ModuleID.ToString();
-                BoardDropDownList.DataBind();
+                ModuleDropDownList.Items.Clear();
+                ModuleDropDownList.AppendDataBoundItems = true;
+                ModuleDropDownList.DataSource = dt; // TODO: Change this to a list unique for the Portal
+                ModuleDropDownList.DataTextField = "ModuleTitle";
+                ModuleDropDownList.DataValueField = "ModuleID";
+                ModuleDropDownList.SelectedValue = YafForumModuleInstanceId.ToString();
+                ModuleDropDownList.DataBind();
 
-                ListItem item = BoardDropDownList.Items.FindByValue(ModuleID.ToString());
+                ListItem item = ModuleDropDownList.Items.FindByValue(YafForumModuleInstanceId.ToString());
 
                 if (item != null)
                 {
-                    BoardDropDownList.ClearSelection();
+                    ModuleDropDownList.ClearSelection();
                     item.Selected = true;
                 }
 
@@ -108,18 +122,18 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
         #region Public Methods (MojoPortal Interface)
         public void SetValue(string val)
         {
-            ListItem item = BoardDropDownList.Items.FindByValue(val);
+            ListItem item = ModuleDropDownList.Items.FindByValue(val);
             if (item != null)
             {
-                BoardDropDownList.ClearSelection();
+                ModuleDropDownList.ClearSelection();
                 item.Selected = true;
             }
-            _moduleId = Convert.ToInt32(val);
+            _yafForumModuleInstanceId = Convert.ToInt32(val);
         }
 
         public string GetValue()
         {
-            return BoardDropDownList.SelectedValue;
+            return ModuleDropDownList.SelectedValue;
         } 
         #endregion
     }
