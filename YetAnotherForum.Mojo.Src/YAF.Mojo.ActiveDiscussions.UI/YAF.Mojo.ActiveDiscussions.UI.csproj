@@ -136,8 +136,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>YAFActiveDiscussions.resx</DependentUpon>
     </Compile>
-    <Compile Include="Components\YafActiveDiscussionsConfiguration.cs" />
-    <Compile Include="Components\YafActiveDiscussionsContentInstaller.cs" />
+    <Compile Include="Components\YafActiveDiscussionsConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="YAFModule\ActiveDiscussion.ascx.cs">
       <DependentUpon>ActiveDiscussion.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

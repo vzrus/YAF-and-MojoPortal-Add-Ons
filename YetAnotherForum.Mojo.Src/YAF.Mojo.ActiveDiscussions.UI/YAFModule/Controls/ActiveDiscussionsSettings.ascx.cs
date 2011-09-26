@@ -21,26 +21,37 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
 
     #endregion
 
-    public partial class ActiveDiscussionsSettings : SiteModuleControl, ISettingControl
+    public partial class ActiveDiscussionsSettings : UserControl, ISettingControl
     {
         #region Fields
         private int _yafForumModuleInstanceId = 0;
         private static readonly ILog log
          = LogManager.GetLogger(typeof(ActiveDiscussionsSettings));
 
-        protected YafActiveDiscussionsConfiguration config = new YafActiveDiscussionsConfiguration();
+   
         #endregion
 
         #region Properties
+
         private int YafForumModuleInstanceId
         {
             get { return _yafForumModuleInstanceId; }
         }
 
+        private int ModuleId
+        {
+            get { return WebUtils.ParseInt32FromQueryString("mid", 0); }
+        }
+
+        private int PageId
+        {
+            get { return WebUtils.ParseInt32FromQueryString("pageid", 0); }
+        } 
        
         #endregion
 
         #region Protected Methods
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -55,23 +66,32 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
 
             if (!Page.IsPostBack)
             {
-                // Get interface to localization
-                var iloc = YafContext.Current.Get<ILocalization>();
-                this.ModuleDropDownList.Text = iloc.GetText("ADMIN_EDITBOARD", "NAME");
-                BindControls();
+
+                try
+                {
+                    // Get interface to localization
+                    var iloc = YafContext.Current.Get<ILocalization>();
+                    this.ModuleDropDownList.Text = iloc.GetText("ADMIN_EDITBOARD", "NAME");
+                    BindControls();
+                }
+                catch (Exception)
+                {
+                    // Yaf was not initialized
+                    log.Debug("You should install a YAF module first.");
+                    Response.Redirect(string.Format("{0}/install", Config.AppRoot ?? Config.ClientFileRoot));
+                }
             }
 
         }
 
         protected void BindControls()
         {
-            Guid dd  = config.YafModuleDefinitionGuid;
-            Guid dd1 = WebUtils.ParseGuidFromHashTable(Settings, "YafModuleDefinitionGuid", Guid.Empty);
-            dd1 = Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df");
+            // The YAF Forum main control guid.
+            Guid dd1 = Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df");
             DataTable dt = null;
             try
             {
-                dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(dd1, "YafForumModuleInstanceId");
+                dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(dd1, "BoardID");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     int ss = -1;
@@ -83,7 +103,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI.Controls
                         }
                         else
                         {
-                          dr["ModuleID"] =  _yafForumModuleInstanceId = Convert.ToInt32(dr["SettingValue"]);
+                            dr["ModuleID"] = _yafForumModuleInstanceId = Convert.ToInt32(dr["ModuleID"]);
                         }
                     }
                  

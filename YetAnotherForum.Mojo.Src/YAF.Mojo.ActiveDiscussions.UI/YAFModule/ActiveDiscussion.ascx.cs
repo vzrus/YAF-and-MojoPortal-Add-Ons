@@ -1,5 +1,6 @@
 ﻿
 using System.Linq;
+using System.Web;
 using System.Web.UI.HtmlControls;
 using Resources;
 using YAF.Mojo.ActiveDiscussions.UI;
@@ -56,6 +57,8 @@ namespace YAF.Mojo.ActiveDiscussions.UI
         private static readonly ILog log
            = LogManager.GetLogger(typeof(ActiveDiscussion));
 
+        protected YafActiveDiscussionsConfiguration config = new YafActiveDiscussionsConfiguration();
+
         /// <summary>
         ///  The first Unread post tooltip string
         /// </summary>
@@ -65,7 +68,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
         int pageid = -1;
         int siteid = -1;
 
-        protected YafActiveDiscussionsConfiguration config = new YafActiveDiscussionsConfiguration();
+       // protected YafActiveDiscussionsConfiguration config = new YafActiveDiscussionsConfiguration();
 
         #endregion
 
@@ -243,8 +246,10 @@ namespace YAF.Mojo.ActiveDiscussions.UI
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            PageSettings ps = CacheHelper.GetCurrentPage();
+          
 
+            PageSettings ps = CacheHelper.GetCurrentPage();
+           
             iloc = YafContext.Current.Get<ILocalization>();
             // Latest forum posts
             // Shows the latest n number of posts on the main forum list page
@@ -258,7 +263,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                 activeTopics = YafContext.Current.Get<IDataCache>()[CacheKey] as DataTable;
             }
             mid = WebUtils.ParseInt32FromHashtable(Settings, "YafForumModuleInstanceId", -999);
-            
+           
             pageid = -1;
             siteid = -1;
             try
@@ -272,37 +277,20 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                     {
                         if ((Convert.ToInt32(forumactivediscussion["SiteID"]) == ps.SiteId && mid <= 0) || mid > 0)
                         {
-                            pageid = Convert.ToInt32(forumactivediscussion["PageID"]);
-                            BoardId = Convert.ToInt32(forumactivediscussion["SettingValue"]);
-                            siteid = Convert.ToInt32(forumactivediscussion["SiteID"]);
+                           
 
                             // The module is found, else retuned latest board. 
-                            if (mid == Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]))
+                            if (mid == Convert.ToInt32(forumactivediscussion["ModuleID"]))
                             {
-                                break;
-                            }
-                            mid = Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]);
-                            if (pageid > 0)
-                            {
+                                pageid = Convert.ToInt32(forumactivediscussion["PageID"]);
+                                BoardId = Convert.ToInt32(forumactivediscussion["SettingValue"]);
+                                siteid = Convert.ToInt32(forumactivediscussion["SiteID"]);
                                 break;
                             }
                         }
 
                     }
-                    foreach (DataRow forumactivediscussion in dt.Rows)
-                    {
-                        pageid = Convert.ToInt32(forumactivediscussion["PageID"]);
-                        BoardId = Convert.ToInt32(forumactivediscussion["SettingValue"]);
-                        siteid = Convert.ToInt32(forumactivediscussion["SiteID"]);
-
-                        // The module is found, else retuned latest board. 
-                        if (mid == Convert.ToInt32(forumactivediscussion["YafForumModuleInstanceId"]))
-                        {
-                            break;
-                        }
-                        mid = Convert.ToInt32(forumactivediscussion["ModuleID"]);
-
-                    }
+                 
                 }
                 else
                 {
