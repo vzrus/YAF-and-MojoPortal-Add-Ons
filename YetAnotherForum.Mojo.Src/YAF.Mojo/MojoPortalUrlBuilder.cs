@@ -103,11 +103,15 @@ namespace YAF.Mojo
 
            // scriptName = scriptName.Replace("Default.aspx", currentPage.Url.TrimStart('~', '/'));
            // scriptName = scriptName.Replace("default.aspx", currentPage.Url.TrimStart('~', '/'));
+           
+            string attachMojoPath = string.Empty;
+            if (!url.Contains("pageid="))
+                attachMojoPath = "&pageid={0}&mid={1}".FormatWith(currentPage.PageId, moduleId);
 
             // If Url Rewriting is disabled we simply add MP module path before yaf path, else we use a custom rewriting. 
             if (!Config.EnableURLRewriting)
             {
-                    return string.Format("{0}?pageid={1}&mid={2}&{3}", scriptName, currentPage.PageId, moduleId, url);
+                return string.Format("{0}?{1}&{2}", scriptName, attachMojoPath, url);
             }
             
                 string baseEl = string.Empty;
@@ -134,8 +138,8 @@ namespace YAF.Mojo
                 {
                     addEl = addEl.Replace("pg=posts", "pg=5");
                 }
-
-                return this.FriendlyRewriter("{0}&pageid={1}&mid={2}{3}".Trim('&').FormatWith(baseEl, currentPage.PageId, moduleId, addEl), boardId, currentPage);
+               
+                return this.FriendlyRewriter("{0}{1}{2}".Trim('&').FormatWith(baseEl, attachMojoPath, addEl), boardId, currentPage);
         }
 
         /// <summary>
