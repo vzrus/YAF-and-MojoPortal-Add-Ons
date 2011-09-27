@@ -246,39 +246,39 @@ namespace YAF.Mojo.ActiveDiscussions.UI
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-          
 
             PageSettings ps = CacheHelper.GetCurrentPage();
-           
+            // Here the YAF initializes for a user
             iloc = YafContext.Current.Get<ILocalization>();
+
             // Latest forum posts
             // Shows the latest n number of posts on the main forum list page
-            const string CacheKey = Constants.Cache.ForumActiveDiscussions;
+            const string cacheKey = Constants.Cache.ForumActiveDiscussions;
 
             DataTable activeTopics = null;
 
+            // For guests this is cached in YAF
             if (YafContext.Current.IsGuest)
             {
                 // allow caching since this is a guest...
-                activeTopics = YafContext.Current.Get<IDataCache>()[CacheKey] as DataTable;
+                activeTopics = YafContext.Current.Get<IDataCache>()[cacheKey] as DataTable;
             }
+
+            // Get current module instance id - only 1 board can be linked to the module 
             mid = WebUtils.ParseInt32FromHashtable(Settings, "YafForumModuleInstanceId", -999);
            
             pageid = -1;
             siteid = -1;
             try
             {
-                DataTable dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df"), "BoardID");
+                var dt = ActiveDiscussions.GetSpecificSettingAllModulesWithTheDefinition(Guid.Parse("c5584bb4-e42f-4c7d-81b7-037176d562df"), "BoardID");
 
                 if (dt.Rows.Count > 0)
                 {
-
                     foreach (DataRow forumactivediscussion in dt.Rows)
                     {
                         if ((Convert.ToInt32(forumactivediscussion["SiteID"]) == ps.SiteId && mid <= 0) || mid > 0)
                         {
-                           
-
                             // The module is found, else retuned latest board. 
                             if (mid == Convert.ToInt32(forumactivediscussion["ModuleID"]))
                             {
@@ -288,9 +288,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                                 break;
                             }
                         }
-
                     }
-                 
                 }
                 else
                 {
@@ -304,8 +302,8 @@ namespace YAF.Mojo.ActiveDiscussions.UI
             }
             if (!Page.IsPostBack)
             {
-                if (activeTopics == null)
-                {
+              //  if (activeTopics == null)
+              //  {
 
                     //  try
                     //  {
@@ -340,7 +338,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                     if (YafContext.Current.IsGuest)
                     {
                         YafContext.Current.Get<IDataCache>().Set(
-                            CacheKey, activeTopics,
+                            cacheKey, activeTopics,
                             TimeSpan.FromMinutes(
                                 YafContext.Current.Get<YafBoardSettings>().ActiveDiscussionsCacheTimeout));
                     }
@@ -351,7 +349,7 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                             NoDataReceivedLbl.Text = YAFActiveDiscussions.ActiveDiscussionNoDataAvailable;
                            noifo_Tr.Visible = true;
                        } */
-                }
+              //  } 
 
                 if (activeTopics != null)
                 {
@@ -365,17 +363,12 @@ namespace YAF.Mojo.ActiveDiscussions.UI
                     this.LatestPosts.DataBind();
                 }
             }
-
         }
 
         private  string GetRealRelativeUrl(int pageid, int mid, string yafPath)
         {
-            if (!Config.EnableURLRewriting)
-            {
-               return string.Format("{0}?pageid={1}&mid={2}&{3}", "~/Default.aspx", pageid, mid, yafPath);
-            }
-
-            return new MojoPortalUrlBuilder().FriendlyRewriter("pageid={0}&mid={1}&{2}".FormatWith(pageid, mid, yafPath),BoardId);
+            // We don't check rewriting here it can't contain pageid.
+            return !Config.EnableURLRewriting ? string.Format("{0}?pageid={1}&mid={2}&{3}", "~/Default.aspx", pageid, mid, yafPath) : new MojoPortalUrlBuilder().FriendlyRewriter("pageid={0}&mid={1}&{2}".FormatWith(pageid, mid, yafPath),BoardId);
         }
 
         #endregion
