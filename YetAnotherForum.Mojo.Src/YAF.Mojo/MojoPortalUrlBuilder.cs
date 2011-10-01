@@ -106,12 +106,12 @@ namespace YAF.Mojo
            
             string attachMojoPath = string.Empty;
             if (!url.Contains("pageid="))
-                attachMojoPath = "&pageid={0}&mid={1}".FormatWith(currentPage.PageId, moduleId);
+                attachMojoPath = "pageid={0}&mid={1}".FormatWith(currentPage.PageId, moduleId);
 
             // If Url Rewriting is disabled we simply add MP module path before yaf path, else we use a custom rewriting. 
             if (!Config.EnableURLRewriting)
             {
-                return string.Format("{0}?{1}&{2}", scriptName, attachMojoPath, url);
+                return string.Format("{0}?{1}{2}{3}", scriptName, attachMojoPath, attachMojoPath.IsSet()? "&" : string.Empty, url);
             }
             
                 string baseEl = string.Empty;
@@ -138,8 +138,8 @@ namespace YAF.Mojo
                 {
                     addEl = addEl.Replace("pg=posts", "pg=5");
                 }
-               
-                return this.FriendlyRewriter("{0}{1}{2}".Trim('&').FormatWith(baseEl, attachMojoPath, addEl), boardId, currentPage);
+
+                return this.FriendlyRewriter("{0}{3}{1}{2}".Trim('&').FormatWith(baseEl, attachMojoPath, addEl, attachMojoPath.IsSet() ? "&" : string.Empty), boardId, currentPage);
         }
 
         /// <summary>
@@ -399,7 +399,10 @@ namespace YAF.Mojo
                     newUrl += "#{0}".FormatWith(parser.Anchor);
                 }
             }
-
+            if (newUrl.Contains("admin_editforum"))
+            {
+                YAF.Classes.Data.LegacyDb.eventlog_create(2, this, newUrl,EventLogTypes.Information);  
+            }
             // just make sure & is &amp; ...
             newUrl = newUrl.Replace("&amp;", "&").Replace("&", "&amp;");
            
